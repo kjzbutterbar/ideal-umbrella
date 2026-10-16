@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OLTC Design & Ordering Tracker</title>
+<style>
+:root{font-family:Segoe UI,Arial,sans-serif;color:#172033;background:#f3f6fa}*{box-sizing:border-box}body{margin:0}header{background:#172b4d;color:#fff;padding:20px 26px}header h1{margin:0 0 5px;font-size:24px}header p{margin:0;color:#d5deed}main{max-width:1400px;margin:auto;padding:20px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}button{border:0;border-radius:8px;padding:9px 13px;font:inherit;font-weight:600;cursor:pointer}.primary{background:#2563eb;color:white}.secondary{background:#e7edf6;color:#1d3557}.danger{background:#fee2e2;color:#991b1b}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat,.unit{background:white;border:1px solid #dce4ef;border-radius:12px;padding:14px}.stat small{display:block;color:#64748b}.stat strong{font-size:24px}.unit-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px}.unit-head{display:flex;justify-content:space-between;gap:8px}.unit h2{font-size:18px;margin:0 0 4px}.muted{color:#64748b;font-size:12px}.pill{font-size:11px;font-weight:700;padding:5px 8px;border-radius:18px;background:#fef3c7;color:#92400e;height:max-content}.pill.done{background:#dcfce7;color:#166534}.pill.issue{background:#fee2e2;color:#991b1b}.progress-line{height:8px;background:#e8edf5;border-radius:20px;overflow:hidden;margin:13px 0 5px}.progress-fill{height:100%;background:#22a06b;transition:width .2s}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#64748b}.steps{display:flex;gap:4px;margin:13px 0}.step{height:5px;flex:1;border-radius:5px;background:#e2e8f0}.step.active{background:#2563eb}.step.done{background:#16a34a}.next{font-size:12px;background:#eff6ff;color:#1d4ed8;padding:9px;border-radius:7px;margin:12px 0}.stage{border-top:1px solid #edf1f6}.stage-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px;font-weight:700;padding:12px 2px}.stage-summary::-webkit-details-marker{display:none}.stage-summary:after{content:"＋";margin-left:auto;color:#64748b}.stage-dropdown[open]>.stage-summary:after{content:"−"}.stage-content{padding:0 2px 12px}.check-row{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}.check-row input{width:16px;height:16px}.review-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:8px 0;font-size:13px}.review-row select{padding:6px;border:1px solid #d3dce8;border-radius:7px;background:white}.date-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;color:#475569;margin:5px 0 9px;padding:6px 8px;background:#f8fafc;border-radius:6px}.date-line input{width:145px;padding:5px;border:1px solid #d3dce8;border-radius:6px}.stage-note{width:100%;border:1px solid #dce4ef;border-radius:7px;padding:8px;margin-top:6px;resize:vertical;min-height:38px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.notice{border:1px solid #dbeafe;border-radius:9px;padding:12px;font-size:13px;color:#334155;margin-bottom:16px;background:#eff6ff}.notice.error{background:#fff1f2;border-color:#fecdd3;color:#9f1239}.notice.success{background:#f0fdf4;border-color:#bbf7d0;color:#166534}.empty{background:white;border:1px dashed #b8c5d8;border-radius:12px;padding:32px;text-align:center;color:#64748b}dialog{border:0;border-radius:13px;padding:0;width:min(500px,calc(100% - 24px));box-shadow:0 20px 70px #0f172a44}dialog::backdrop{background:#0f172a88}.modal-head{background:#172b4d;color:white;padding:16px}.modal-body{padding:18px;display:grid;gap:10px}.modal-body label{display:grid;gap:5px;font-size:13px;font-weight:600}.modal-body input,.modal-body textarea{padding:9px;border:1px solid #cbd5e1;border-radius:7px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 18px 18px}.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:650px){main{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.unit-list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>OLTC Design & Ordering Tracker</h1><p>Engineering reviews, manufacturer revisions, and purchasing handoffs</p></header>
+<main>
+  <div class="toolbar">
+    <div><strong id="unitCount">Connecting…</strong><div class="muted">GitHub Pages mode · saved in this browser; use JSON backups to transfer data</div></div>
+    <div class="toolbar-actions"><button class="secondary" id="refreshBtn">↻ Reload</button><button class="secondary" id="importBtn">Import JSON</button><input id="importFile" type="file" accept=".json,application/json" hidden><button class="secondary" id="exportAll">Export JSON backup</button><button class="primary" id="addBtn">＋ Add unit</button></div>
+  </div>
+  <div id="notice" class="notice">Loading tracker data from this browser…</div>
+  <div class="stats"><div class="stat"><small>Total units</small><strong id="totalStat">0</strong></div><div class="stat"><small>In progress</small><strong id="activeStat">0</strong></div><div class="stat"><small>Needs attention</small><strong id="waitingStat">0</strong></div><div class="stat"><small>Ordered</small><strong id="orderedStat">0</strong></div></div>
+  <div id="units" class="unit-list"></div>
+</main>
+<dialog id="addDialog"><div class="modal-head"><b>Add OLTC unit</b></div><form id="addForm"><div class="modal-body">
+<label>Unit / project number *<input name="unit" required placeholder="e.g. 22806 - Unit 1"></label>
+<label>Description<input name="description" placeholder="Optional"></label><label>Manufacturer<input name="manufacturer" placeholder="Optional"></label>
+<label>Target date<input name="due" type="date"></label><label>Notes<textarea name="notes" rows="2"></textarea></label>
+</div><div class="modal-actions"><button type="button" class="secondary" id="cancelAdd">Cancel</button><button class="primary" id="createBtn">Create unit</button></div></form></dialog>
+<script>
+"use strict";
+const people = ["EE Designer", "EE Wiring", "ME"];
+const reviewStages = ["Quote review", "Final drawing review"];
+let units = [];
+let busy = false;
+
+function today(){ return new Date().toISOString().slice(0,10); }
+function newUnit(d){
+  const initial = {};
+  const reviews = {};
+  people.forEach(p => initial[p] = {done:false,date:""});
+  reviewStages.forEach(s => { reviews[s] = {}; people.forEach(p => reviews[s][p] = {status:"pending",date:""}); });
+  return {
+    id: (crypto.randomUUID ? crypto.randomUUID() : "unit-"+Date.now()+"-"+Math.random().toString(16).slice(2)),
+    unit:d.unit.trim(), description:d.description||"", manufacturer:d.manufacturer||"", due:d.due||"", notes:d.notes||"",
+    initial,
+    quoteReceived:{done:false,date:""}, quoteSent:{done:false,date:""},
+    finalReceived:{done:false,date:""}, finalSent:{done:false,date:""}, ordered:{done:false,date:""},
+    reviews, comments:{"Initial design":"","Quote review":"","Final drawing review":""}
+  };
+}
+function isDone(o){return !!(o && o.done);}
+function approved(u,s){return people.every(p=>u.reviews?.[s]?.[p]?.status==="approved");}
+function rejected(u){return reviewStages.some(s=>people.some(p=>u.reviews?.[s]?.[p]?.status==="rejected"));}
+function stageDone(u,i){
+  return [
+    people.every(p=>isDone(u.initial?.[p])),
+    isDone(u.quoteReceived),
+    approved(u,"Quote review")&&isDone(u.quoteSent),
+    isDone(u.finalReceived),
+    approved(u,"Final drawing review")&&isDone(u.finalSent),
+    isDone(u.ordered)
+  ][i];
+}
+function pct(u){return Math.round([0,1,2,3,4,5].filter(i=>stageDone(u,i)).length/6*100);}
+function nextAction(u){
+  if(isDone(u.ordered))return "Order placed";
+  if(rejected(u))return "Correction required — one or more reviews were rejected";
+  if(!people.every(p=>isDone(u.initial?.[p])))return "Initial design: "+people.filter(p=>!isDone(u.initial?.[p])).join(", ");
+  if(!isDone(u.quoteReceived))return "Purchasing: send initial design and record quote received";
+  if(!approved(u,"Quote review"))return "Quote review: "+people.filter(p=>u.reviews?.["Quote review"]?.[p]?.status!=="approved").join(", ");
+  if(!isDone(u.quoteSent))return "Purchasing: return approved quote to manufacturer";
+  if(!isDone(u.finalReceived))return "Purchasing: receive final drawing";
+  if(!approved(u,"Final drawing review"))return "Final drawing review: "+people.filter(p=>u.reviews?.["Final drawing review"]?.[p]?.status!=="approved").join(", ");
+  if(!isDone(u.finalSent))return "Purchasing: send approved final drawing";
+  return "Purchasing: place order";
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function dateField(label,field,obj){return `<div class="date-line"><span>${esc(label)} date</span><input type="date" aria-label="${esc(label)} date" data-date="${esc(field)}" value="${esc(obj?.date||"")}"></div>`;}
+function checkbox(label,field,obj,disabled=false){return `<label class="check-row"><input type="checkbox" data-check="${esc(field)}" ${isDone(obj)?"checked":""} ${disabled?"disabled":""}>${esc(label)}</label>${dateField(label,field,obj)}`;}
+function reviewRows(u,stage){
+  return people.map(p=>{
+    const r=u.reviews[stage][p];
+    return `<div class="review-row"><span>${esc(p)}</span><select data-review="${esc(stage)}" data-person="${esc(p)}"><option value="pending" ${r.status==="pending"?"selected":""}>Pending</option><option value="approved" ${r.status==="approved"?"selected":""}>✓ Approved</option><option value="rejected" ${r.status==="rejected"?"selected":""}>✕ Rejected</option></select></div>${dateField(p+" approval",stage+"|"+p,r)}`;
+  }).join("");
+}
+function renderCard(u){
+  const progress=pct(u), first=[0,1,2,3,4,5].find(i=>!stageDone(u,i));
+  return `<article class="unit" data-id="${esc(u.id)}">
+  <div class="unit-head"><div><h2>${esc(u.unit)}</h2><div class="muted">${esc(u.description||"No description")}${u.manufacturer?" · "+esc(u.manufacturer):""}</div>${u.due?`<div class="muted">Target: ${esc(u.due)}</div>`:""}</div><span class="pill ${isDone(u.ordered)?"done":rejected(u)?"issue":""}">${isDone(u.ordered)?"ORDERED":rejected(u)?"CORRECTION NEEDED":"IN PROGRESS"}</span></div>
+  <div class="progress-line"><div class="progress-fill" style="width:${progress}%"></div></div><div class="progress-label"><span>${progress}% workflow complete</span><span>${isDone(u.ordered)?"Complete":`Stage ${(first??5)+1} of 6`}</span></div>
+  <div class="steps">${[0,1,2,3,4,5].map(i=>`<div class="step ${stageDone(u,i)?"done":i===first?"active":""}"></div>`).join("")}</div>
+  <div class="next"><b>Next action:</b> ${esc(nextAction(u))}</div>
+  <section class="stage"><details class="stage-dropdown"><summary class="stage-summary">1. Initial design <span class="muted">${people.filter(p=>isDone(u.initial?.[p])).length}/3 complete</span></summary><div class="stage-content">${people.map(p=>checkbox(p+" — initial information complete","initial|"+p,u.initial[p])).join("")}<textarea class="stage-note" data-comment="Initial design" placeholder="Initial design notes">${esc(u.comments?.["Initial design"]||"")}</textarea></div></details></section>
+  <section class="stage"><details class="stage-dropdown"><summary class="stage-summary">2. Quote received / purchasing</summary><div class="stage-content">${checkbox("Purchasing confirms quote received","quoteReceived",u.quoteReceived)}${checkbox("Purchasing sent approved quote to manufacturer","quoteSent",u.quoteSent,!approved(u,"Quote review"))}</div></details></section>
+  <section class="stage"><details class="stage-dropdown"><summary class="stage-summary">3. Quote review <span class="muted">${people.filter(p=>u.reviews["Quote review"][p].status==="approved").length}/3 approved</span></summary><div class="stage-content">${reviewRows(u,"Quote review")}<textarea class="stage-note" data-comment="Quote review" placeholder="Review comments / corrections">${esc(u.comments?.["Quote review"]||"")}</textarea></div></details></section>
+  <section class="stage"><details class="stage-dropdown"><summary class="stage-summary">4. Final drawing received</summary><div class="stage-content">${checkbox("Purchasing confirms final drawing received","finalReceived",u.finalReceived)}</div></details></section>
+  <section class="stage"><details class="stage-dropdown"><summary class="stage-summary">5. Final drawing review <span class="muted">${people.filter(p=>u.reviews["Final drawing review"][p].status==="approved").length}/3 approved</span></summary><div class="stage-content">${reviewRows(u,"Final drawing review")}<textarea class="stage-note" data-comment="Final drawing review" placeholder="Review comments / corrections">${esc(u.comments?.["Final drawing review"]||"")}</textarea>${checkbox("Purchasing sent approved final drawing","finalSent",u.finalSent,!approved(u,"Final drawing review"))}</div></details></section>
+  <section class="stage"><details class="stage-dropdown"><summary class="stage-summary">6. Purchase order</summary><div class="stage-content">${checkbox("Purchase order placed","ordered",u.ordered,!isDone(u.finalSent)||!approved(u,"Final drawing review"))}</div></details></section>
+  <div class="actions"><button class="secondary" data-export>Export unit</button><button class="danger" data-delete>Delete</button></div></article>`;
+}
+function captureOpen(){return [...document.querySelectorAll("#units article")].map(c=>({id:c.dataset.id,open:[...c.querySelectorAll("details")].map((d,i)=>d.open?i:null).filter(i=>i!==null)}));}
+function restoreOpen(states){states.forEach(s=>{const c=[...document.querySelectorAll("#units article")].find(n=>n.dataset.id===s.id);if(c)[...c.querySelectorAll("details")].forEach((d,i)=>d.open=s.open.includes(i));});}
+function setNotice(message,type=""){const n=document.querySelector("#notice");n.className="notice"+(type?" "+type:"");n.textContent=message;}
+function render(open=null){
+  document.querySelector("#units").innerHTML=units.length?units.map(renderCard).join(""):'<div class="empty">No units yet. Click <b>＋ Add unit</b> to begin.</div>';
+  if(open)restoreOpen(open);
+  document.querySelector("#unitCount").textContent=units.length+" units";
+  document.querySelector("#totalStat").textContent=units.length;
+  document.querySelector("#activeStat").textContent=units.filter(u=>!isDone(u.ordered)).length;
+  document.querySelector("#waitingStat").textContent=units.filter(u=>!isDone(u.ordered)&&(rejected(u)||!people.every(p=>isDone(u.initial?.[p]))||!approved(u,"Quote review")||!approved(u,"Final drawing review"))).length;
+  document.querySelector("#orderedStat").textContent=units.filter(u=>isDone(u.ordered)).length;
+}
+const STORAGE_KEY = "oltc-tracker-data-v1";
+function saveLocal(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(units));
+}
+function loadUnits(){
+  try{
+    const saved = localStorage.getItem(STORAGE_KEY);
+    units = saved ? JSON.parse(saved) : [];
+    if(!Array.isArray(units)) throw new Error("Saved tracker data is not a list.");
+    render();
+    setNotice("Loaded " + units.length + " unit(s) from this browser. Export a JSON backup to move data to another browser or computer.", "success");
+  }catch(err){
+    units = [];
+    render();
+    setNotice("Could not read saved tracker data: " + err.message, "error");
+  }
+}
+function snapshot(){return JSON.parse(JSON.stringify(units));}
+async function saveExisting(id,open){
+  try{
+    saveLocal();
+    render(open);
+    setNotice("Saved in this browser. Remember to export a JSON backup to transfer changes to other computers.", "success");
+  }catch(err){
+    setNotice("SAVE FAILED: " + err.message, "error");
+  }
+}
+function setDone(obj,val,date){obj.done=val;if(val&&!obj.date)obj.date=date||today();if(!val)obj.date="";}
+document.querySelector("#addBtn").onclick=()=>document.querySelector("#addDialog").showModal();
+document.querySelector("#cancelAdd").onclick=()=>document.querySelector("#addDialog").close();
+document.querySelector("#refreshBtn").onclick=()=>loadUnits();
+document.querySelector("#importBtn").onclick=()=>document.querySelector("#importFile").click();
+document.querySelector("#importFile").addEventListener("change", async e=>{
+  const file=e.target.files?.[0]; if(!file)return;
+  try{
+    const parsed=JSON.parse(await file.text());
+    const incoming=Array.isArray(parsed)?parsed:parsed.units;
+    if(!Array.isArray(incoming))throw new Error("JSON must contain a units array.");
+    if(!incoming.every(u=>u && typeof u.id==="string" && typeof u.unit==="string"))throw new Error("Each unit must have string id and unit fields.");
+    if(!confirm("Import " + incoming.length + " unit(s)? This replaces the data currently saved in this browser."))return;
+    units=incoming; saveLocal(); render(); setNotice("Imported " + units.length + " unit(s) from JSON into this browser.","success");
+  }catch(err){setNotice("Import failed: " + err.message,"error");}
+  finally{e.target.value="";}
+});
+document.querySelector("#addForm").onsubmit=async e=>{
+  e.preventDefault();if(busy)return;busy=true;const btn=document.querySelector("#createBtn");btn.disabled=true;
+  const form=Object.fromEntries(new FormData(e.target));const unit=newUnit(form);
+  try{units.unshift(unit);saveLocal();e.target.reset();document.querySelector("#addDialog").close();render();setNotice("Unit added and saved in this browser.","success");}
+  catch(err){setNotice("Could not add unit: "+err.message,"error");}
+  finally{busy=false;btn.disabled=false;}
+};
+document.querySelector("#units").addEventListener("change",async e=>{
+  const card=e.target.closest(".unit");if(!card)return;
+  const id=card.dataset.id, open=captureOpen(), u=units.find(x=>x.id===id);if(!u)return;
+  if(e.target.dataset.check){
+    const [key,person]=e.target.dataset.check.split("|");const obj=key==="initial"?u.initial[person]:u[key];
+    setDone(obj,e.target.checked);
+    await saveExisting(id,open);
+  }else if(e.target.dataset.review){
+    const stage=e.target.dataset.review,person=e.target.dataset.person,r=u.reviews[stage][person];
+    r.status=e.target.value;
+    if(r.status==="approved"&&!r.date)r.date=today();
+    if(r.status!=="approved")r.date="";
+    await saveExisting(id,open);
+  }else if(e.target.dataset.date){
+    const key=e.target.dataset.date,[a,b]=key.split("|");let obj;
+    if(a==="initial")obj=u.initial[b];
+    else if(reviewStages.includes(a))obj=u.reviews[a][b];
+    else obj=u[a];
+    if(!obj)return;
+    obj.date=e.target.value;
+    if(a==="initial")obj.done=!!e.target.value;
+    else if(reviewStages.includes(a)){obj.status=e.target.value?"approved":"pending";}
+    else obj.done=!!e.target.value;
+    await saveExisting(id,open);
+  }
+});
+document.querySelector("#units").addEventListener("change",async e=>{
+  if(!e.target.dataset.comment)return;
+  const card=e.target.closest(".unit"),u=units.find(x=>x.id===card?.dataset.id);if(!u)return;
+  u.comments[e.target.dataset.comment]=e.target.value;
+  await saveExisting(u.id,captureOpen());
+});
+document.querySelector("#units").addEventListener("click",async e=>{
+  const card=e.target.closest(".unit");if(!card)return;const id=card.dataset.id,u=units.find(x=>x.id===id);if(!u)return;
+  if(e.target.closest("[data-export]"))download(u,"OLTC-"+u.unit.replace(/[^a-z0-9_-]/gi,"_")+".json");
+  if(e.target.closest("[data-delete]")){
+    if(!confirm("Delete "+u.unit+" from this browser?"))return;
+    try{units=units.filter(x=>x.id!==id);saveLocal();render();setNotice("Unit deleted from this browser.","success");}
+    catch(err){setNotice("Could not delete unit: "+err.message,"error");}
+  }
+});
+function download(data,name){const a=document.createElement("a"),url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+document.querySelector("#exportAll").onclick=()=>download({format:"oltc-tracker-data",format_version:1,exported_at:new Date().toISOString(),units},"OLTC-tracker-backup.json");
+loadUnits();
+</script>
+</body>
+</html>
