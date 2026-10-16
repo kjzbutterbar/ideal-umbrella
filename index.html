@@ -97,7 +97,7 @@ function renderCard(u){
   return `<article class="unit" data-id="${esc(u.id)}">
   <details class="unit-dropdown">
   <summary class="unit-summary">
-  <div class="unit-head"><div><h2>${esc(u.unit)}</h2><div class="muted">${esc(u.description||"No description")}${u.manufacturer?" · "+esc(u.manufacturer):""}</div>${u.due?`<div class="muted">Target: ${esc(u.due)}</div>`:""}</div><span class="pill ${isDone(u.ordered)?"done":rejected(u)?"issue":""}"><div class="next"><b>Next action:</b> ${esc(nextAction(u))}</div>${isDone(u.ordered)?"ORDERED":rejected(u)?"CORRECTION NEEDED":"IN PROGRESS"}</span></div></summary><div class="unit-body">
+  <div class="unit-head"><div><h2>${esc(u.unit)}</h2><div class="muted">${esc(u.description||"No description")}${u.manufacturer?" · "+esc(u.manufacturer):""}</div>${u.due?`<div class="muted">Target: ${esc(u.due)}</div>`:""}</div><div class="next"><b>Next action:</b> ${esc(nextAction(u))}</div><span class="pill ${isDone(u.ordered)?"done":rejected(u)?"issue":""}">${isDone(u.ordered)?"ORDERED":rejected(u)?"CORRECTION NEEDED":"IN PROGRESS"}</span></div></summary><div class="unit-body">
   <div class="progress-line"><div class="progress-fill" style="width:${progress}%"></div></div><div class="progress-label"><span>${progress}% workflow complete</span><span>${isDone(u.ordered)?"Complete":`Stage ${(first??5)+1} of 6`}</span></div>
   <div class="steps">${[0,1,2,3,4,5].map(i=>`<div class="step ${stageDone(u,i)?"done":i===first?"active":""}"></div>`).join("")}</div>
   <!--<div class="next"><b>Next action:</b> ${esc(nextAction(u))}</div>-->
