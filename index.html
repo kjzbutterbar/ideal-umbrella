@@ -32,6 +32,12 @@
       <option value="number-desc">Numerical ↓ (highest first)</option>
       <option value="recent">Recently updated</option>
     </select></label>
+    <label class="sort-wrap"><span>Action required</span><select id="actionFilter">
+      <option value="all">All departments</option>
+      <option value="EE">EE</option>
+      <option value="ME">ME</option>
+      <option value="Purchasing">Purchasing</option>
+    </select></label>
     <button type="button" class="secondary" id="clearFilters">Clear filters</button>
   </div>
   <div id="notice" class="notice">Connecting to the shared database…</div>
@@ -125,10 +131,53 @@ function projectNumber(u){
   const match=String(u.unit||"").match(/\d+/);
   return match?Number(match[0]):Number.MAX_SAFE_INTEGER;
 }
+// Returns the department(s) responsible for the next outstanding action.
+// If a review is rejected, the department of the rejecting reviewer is flagged.
+function actionDepartments(u){
+  const departments = new Set();
+  if(isDone(u.ordered)) return departments;
+
+  const rejectedReviewers = [];
+  reviewStages.forEach(stage => people.forEach(person => {
+    if(u.reviews?.[stage]?.[person]?.status === "rejected") rejectedReviewers.push(person);
+  }));
+  if(rejectedReviewers.length){
+    rejectedReviewers.forEach(person => departments.add(person === "ME" ? "ME" : "EE"));
+    return departments;
+  }
+
+  const initialMissing = people.filter(person => !isDone(u.initial?.[person]));
+  if(initialMissing.length){
+    initialMissing.forEach(person => departments.add(person === "ME" ? "ME" : "EE"));
+    return departments;
+  }
+  if(!isDone(u.quoteReceived)) return new Set(["Purchasing"]);
+
+  const quotePending = people.filter(person => u.reviews?.["Quote review"]?.[person]?.status !== "approved");
+  if(quotePending.length){
+    quotePending.forEach(person => departments.add(person === "ME" ? "ME" : "EE"));
+    return departments;
+  }
+  if(!isDone(u.quoteSent)) return new Set(["Purchasing"]);
+  if(!isDone(u.finalReceived)) return new Set(["Purchasing"]);
+
+  const finalPending = people.filter(person => u.reviews?.["Final drawing review"]?.[person]?.status !== "approved");
+  if(finalPending.length){
+    finalPending.forEach(person => departments.add(person === "ME" ? "ME" : "EE"));
+    return departments;
+  }
+  if(!isDone(u.finalSent)) return new Set(["Purchasing"]);
+  return new Set(["Purchasing"]); // Place the order.
+}
 function filteredSortedUnits(){
   const query=(document.querySelector("#unitSearch")?.value||"").trim().toLocaleLowerCase();
   const sort=document.querySelector("#unitSort")?.value||"number-asc";
-  const result=units.filter(u=>[u.unit,u.description,u.manufacturer,u.notes].some(v=>String(v||"").toLocaleLowerCase().includes(query)));
+  const department=document.querySelector("#actionFilter")?.value||"all";
+  const result=units.filter(u=>{
+    const matchesSearch=[u.unit,u.description,u.manufacturer,u.notes].some(v=>String(v||"").toLocaleLowerCase().includes(query));
+    const matchesDepartment=department==="all" || actionDepartments(u).has(department);
+    return matchesSearch && matchesDepartment;
+  });
   result.sort((a,b)=>{
     if(sort==="number-desc") return projectNumber(b)-projectNumber(a) || String(b.unit||"").localeCompare(String(a.unit||""),undefined,{numeric:true,sensitivity:"base"});
     if(sort==="recent") return String(b._updatedAt||"").localeCompare(String(a._updatedAt||""));
@@ -197,9 +246,11 @@ document.querySelector("#cancelAdd").onclick=()=>document.querySelector("#addDia
 document.querySelector("#refreshBtn").onclick=()=>loadUnits();
 document.querySelector("#unitSearch").addEventListener("input",()=>render(captureOpen()));
 document.querySelector("#unitSort").addEventListener("change",()=>render(captureOpen()));
+document.querySelector("#actionFilter").addEventListener("change",()=>render(captureOpen()));
 document.querySelector("#clearFilters").addEventListener("click",()=>{
   document.querySelector("#unitSearch").value="";
   document.querySelector("#unitSort").value="number-asc";
+  document.querySelector("#actionFilter").value="all";
   render(captureOpen());
 });
 document.querySelector("#addForm").onsubmit=async e=>{
