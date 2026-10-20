@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OLTC Design & Ordering Tracker</title>
 <style>
-:root{font-family:Segoe UI,Arial,sans-serif;color:#172033;background:#f3f6fa}*{box-sizing:border-box}body{margin:0}header{background:#172b4d;color:#fff;padding:20px 26px}header h1{margin:0 0 5px;font-size:24px}header p{margin:0;color:#d5deed}main{max-width:1400px;margin:auto;padding:20px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}button{border:0;border-radius:8px;padding:9px 13px;font:inherit;font-weight:600;cursor:pointer}.primary{background:#2563eb;color:white}.secondary{background:#e7edf6;color:#1d3557}.danger{background:#fee2e2;color:#991b1b}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat,.unit{background:white;border:1px solid #dce4ef;border-radius:12px;padding:14px}.stat small{display:block;color:#64748b}.stat strong{font-size:24px}..unit-list{display:grid;grid-template-columns:1fr;gap:14px}.unit-head{display:flex;justify-content:space-between;gap:8px}.unit-summary{list-style:none;cursor:pointer;padding:4px;border-radius:8px;}.unit-summary::-webkit-details-marker{display:none;}.unit-summary::after{content:"＋";float:right;color:#64748b;font-size:18px;margin-top:-24px;}.unit-dropdown[open] > .unit-summary::after{content:"−";}.unit-body{padding-top:10px;}.unit h2{font-size:18px;margin:0 0 4px}.muted{color:#64748b;font-size:12px}.pill{font-size:11px;font-weight:700;padding:5px 8px;border-radius:18px;background:#fef3c7;color:#92400e;height:max-content}.pill.done{background:#dcfce7;color:#166534}.pill.issue{background:#fee2e2;color:#991b1b}.progress-line{height:8px;background:#e8edf5;border-radius:20px;overflow:hidden;margin:13px 0 5px}.progress-fill{height:100%;background:#22a06b;transition:width .2s}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#64748b}.steps{display:flex;gap:4px;margin:13px 0}.step{height:5px;flex:1;border-radius:5px;background:#e2e8f0}.step.active{background:#2563eb}.step.done{background:#16a34a}.next{font-size:12px;background:#eff6ff;color:#1d4ed8;padding:9px;border-radius:7px;margin:12px 0}.stage{border-top:1px solid #edf1f6}.stage-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px;font-weight:700;padding:12px 2px}.stage-summary::-webkit-details-marker{display:none}.stage-summary:after{content:"＋";margin-left:auto;color:#64748b}.stage-dropdown[open]>.stage-summary:after{content:"−"}.stage-content{padding:0 2px 12px}.check-row{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}.check-row input{width:16px;height:16px}.review-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:8px 0;font-size:13px}.review-row select{padding:6px;border:1px solid #d3dce8;border-radius:7px;background:white}.date-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;color:#475569;margin:5px 0 9px;padding:6px 8px;background:#f8fafc;border-radius:6px}.date-line input{width:145px;padding:5px;border:1px solid #d3dce8;border-radius:6px}.date-entry{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.completed-by{font-size:11px;color:#64748b;min-width:68px}.stage-note{width:100%;border:1px solid #dce4ef;border-radius:7px;padding:8px;margin-top:6px;resize:vertical;min-height:38px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.notice{border:1px solid #dbeafe;border-radius:9px;padding:12px;font-size:13px;color:#334155;margin-bottom:16px;background:#eff6ff}.notice.error{background:#fff1f2;border-color:#fecdd3;color:#9f1239}.notice.success{background:#f0fdf4;border-color:#bbf7d0;color:#166534}.empty{background:white;border:1px dashed #b8c5d8;border-radius:12px;padding:32px;text-align:center;color:#64748b}dialog{border:0;border-radius:13px;padding:0;width:min(500px,calc(100% - 24px));box-shadow:0 20px 70px #0f172a44}dialog::backdrop{background:#0f172a88}.modal-head{background:#172b4d;color:white;padding:16px}.modal-body{padding:18px;display:grid;gap:10px}.modal-body label{display:grid;gap:5px;font-size:13px;font-weight:600}.modal-body input,.modal-body textarea{padding:9px;border:1px solid #cbd5e1;border-radius:7px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 18px 18px}.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}.login-panel{max-width:460px;margin:36px auto;background:#fff;border:1px solid #dce4ef;border-radius:14px;padding:22px;box-shadow:0 8px 28px #0f172a0d}.login-panel h2{margin-top:0}.login-panel label{display:grid;gap:6px;margin:12px 0;font-size:13px;font-weight:600}.login-panel input{padding:10px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}.login-actions{display:flex;gap:8px;flex-wrap:wrap}.hidden{display:none!important}@media(max-width:650px){main{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.unit-list{grid-template-columns:1fr}}
+:root{font-family:Segoe UI,Arial,sans-serif;color:#172033;background:#f3f6fa}*{box-sizing:border-box}body{margin:0}header{background:#172b4d;color:#fff;padding:20px 26px}header h1{margin:0 0 5px;font-size:24px}header p{margin:0;color:#d5deed}main{max-width:1400px;margin:auto;padding:20px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}button{border:0;border-radius:8px;padding:9px 13px;font:inherit;font-weight:600;cursor:pointer}.primary{background:#2563eb;color:white}.secondary{background:#e7edf6;color:#1d3557}.danger{background:#fee2e2;color:#991b1b}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat,.unit{background:white;border:1px solid #dce4ef;border-radius:12px;padding:14px}.stat small{display:block;color:#64748b}.stat strong{font-size:24px}.unit-list{display:grid;grid-template-columns:1fr;gap:14px}.unit-head{display:flex;justify-content:space-between;gap:8px}.unit-summary{list-style:none;cursor:pointer;padding:4px;border-radius:8px;}.unit-summary::-webkit-details-marker{display:none;}.unit-summary::after{content:"＋";float:right;color:#64748b;font-size:18px;margin-top:-24px;}.unit-dropdown[open] > .unit-summary::after{content:"−";}.unit-body{padding-top:10px;}.unit h2{font-size:18px;margin:0 0 4px}.muted{color:#64748b;font-size:12px}.pill{font-size:11px;font-weight:700;padding:5px 8px;border-radius:18px;background:#fef3c7;color:#92400e;height:max-content}.pill.done{background:#dcfce7;color:#166534}.pill.issue{background:#fee2e2;color:#991b1b}.progress-line{height:8px;background:#e8edf5;border-radius:20px;overflow:hidden;margin:13px 0 5px}.progress-fill{height:100%;background:#22a06b;transition:width .2s}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#64748b}.steps{display:flex;gap:4px;margin:13px 0}.step{height:5px;flex:1;border-radius:5px;background:#e2e8f0}.step.active{background:#2563eb}.step.done{background:#16a34a}.next{font-size:12px;background:#eff6ff;color:#1d4ed8;padding:9px;border-radius:7px;margin:12px 0}.stage{border-top:1px solid #edf1f6}.stage-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px;font-weight:700;padding:12px 2px}.stage-summary::-webkit-details-marker{display:none}.stage-summary:after{content:"＋";margin-left:auto;color:#64748b}.stage-dropdown[open]>.stage-summary:after{content:"−"}.stage-content{padding:0 2px 12px}.check-row{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}.check-row input{width:16px;height:16px}.review-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:8px 0;font-size:13px}.review-row select{padding:6px;border:1px solid #d3dce8;border-radius:7px;background:white}.date-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;color:#475569;margin:5px 0 9px;padding:6px 8px;background:#f8fafc;border-radius:6px}.date-line input{width:145px;padding:5px;border:1px solid #d3dce8;border-radius:6px}.date-entry{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.completed-by{font-size:11px;color:#64748b;min-width:68px}.stage-note{width:100%;border:1px solid #dce4ef;border-radius:7px;padding:8px;margin-top:6px;resize:vertical;min-height:38px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.notice{border:1px solid #dbeafe;border-radius:9px;padding:12px;font-size:13px;color:#334155;margin-bottom:16px;background:#eff6ff}.notice.error{background:#fff1f2;border-color:#fecdd3;color:#9f1239}.notice.success{background:#f0fdf4;border-color:#bbf7d0;color:#166534}.empty{background:white;border:1px dashed #b8c5d8;border-radius:12px;padding:32px;text-align:center;color:#64748b}dialog{border:0;border-radius:13px;padding:0;width:min(500px,calc(100% - 24px));box-shadow:0 20px 70px #0f172a44}dialog::backdrop{background:#0f172a88}.modal-head{background:#172b4d;color:white;padding:16px}.modal-body{padding:18px;display:grid;gap:10px}.modal-body label{display:grid;gap:5px;font-size:13px;font-weight:600}.modal-body input,.modal-body textarea{padding:9px;border:1px solid #cbd5e1;border-radius:7px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 18px 18px}.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}.filter-toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #dce4ef;border-radius:10px;padding:12px;margin-bottom:16px}.filter-toolbar label{display:grid;gap:5px;font-size:12px;font-weight:700;color:#475569}.search-wrap{flex:1;min-width:240px}.sort-wrap{min-width:220px}.filter-toolbar input,.filter-toolbar select{width:100%;padding:9px 10px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;font:inherit;color:#172033}.login-panel{max-width:460px;margin:36px auto;background:#fff;border:1px solid #dce4ef;border-radius:14px;padding:22px;box-shadow:0 8px 28px #0f172a0d}.login-panel h2{margin-top:0}.login-panel label{display:grid;gap:6px;margin:12px 0;font-size:13px;font-weight:600}.login-panel input{padding:10px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}.login-actions{display:flex;gap:8px;flex-wrap:wrap}.hidden{display:none!important}@media(max-width:650px){main{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.unit-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -24,6 +24,15 @@
   <div class="toolbar">
     <div><strong id="unitCount">Connecting…</strong><div class="muted">Shared online database · changes are synced for authorized users</div></div>
     <div class="toolbar-actions"><button class="secondary" id="refreshBtn">↻ Refresh</button><button class="secondary" id="exportAll">Export backup</button><button class="secondary" id="signOutBtn">Sign out</button><button class="primary" id="addBtn">＋ Add unit</button></div>
+  </div>
+  <div class="filter-toolbar" aria-label="Filter and sort units">
+    <label class="search-wrap"><span>Search units</span><input id="unitSearch" type="search" placeholder="Project number, description, manufacturer…" autocomplete="off"></label>
+    <label class="sort-wrap"><span>Order by</span><select id="unitSort">
+      <option value="number-asc">Numerical ↑ (lowest first)</option>
+      <option value="number-desc">Numerical ↓ (highest first)</option>
+      <option value="recent">Recently updated</option>
+    </select></label>
+    <button type="button" class="secondary" id="clearFilters">Clear filters</button>
   </div>
   <div id="notice" class="notice">Connecting to the shared database…</div>
   <div class="stats"><div class="stat"><small>Total units</small><strong id="totalStat">0</strong></div><div class="stat"><small>In progress</small><strong id="activeStat">0</strong></div><div class="stat"><small>Needs attention</small><strong id="waitingStat">0</strong></div><div class="stat"><small>Ordered</small><strong id="orderedStat">0</strong></div></div>
@@ -112,10 +121,29 @@ function renderCard(u){
 function captureOpen(){return [...document.querySelectorAll("#units article")].map(c=>({id:c.dataset.id,open:[...c.querySelectorAll("details")].map((d,i)=>d.open?i:null).filter(i=>i!==null)}));}
 function restoreOpen(states){states.forEach(s=>{const c=[...document.querySelectorAll("#units article")].find(n=>n.dataset.id===s.id);if(c)[...c.querySelectorAll("details")].forEach((d,i)=>d.open=s.open.includes(i));});}
 function setNotice(message,type=""){const n=document.querySelector("#notice");n.className="notice"+(type?" "+type:"");n.textContent=message;}
+function projectNumber(u){
+  const match=String(u.unit||"").match(/\d+/);
+  return match?Number(match[0]):Number.MAX_SAFE_INTEGER;
+}
+function filteredSortedUnits(){
+  const query=(document.querySelector("#unitSearch")?.value||"").trim().toLocaleLowerCase();
+  const sort=document.querySelector("#unitSort")?.value||"number-asc";
+  const result=units.filter(u=>[u.unit,u.description,u.manufacturer,u.notes].some(v=>String(v||"").toLocaleLowerCase().includes(query)));
+  result.sort((a,b)=>{
+    if(sort==="number-desc") return projectNumber(b)-projectNumber(a) || String(b.unit||"").localeCompare(String(a.unit||""),undefined,{numeric:true,sensitivity:"base"});
+    if(sort==="recent") return String(b._updatedAt||"").localeCompare(String(a._updatedAt||""));
+    return projectNumber(a)-projectNumber(b) || String(a.unit||"").localeCompare(String(b.unit||""),undefined,{numeric:true,sensitivity:"base"});
+  });
+  return result;
+}
 function render(open=null){
-  document.querySelector("#units").innerHTML=units.length?units.map(renderCard).join(""):'<div class="empty">No units yet. Click <b>＋ Add unit</b> to begin.</div>';
+  const visible=filteredSortedUnits();
+  const container=document.querySelector("#units");
+  if(visible.length) container.innerHTML=visible.map(renderCard).join("");
+  else if(units.length) container.innerHTML='<div class="empty">No units match your search. Try another term or click <b>Clear filters</b>.</div>';
+  else container.innerHTML='<div class="empty">No units yet. Click <b>＋ Add unit</b> to begin.</div>';
   if(open)restoreOpen(open);
-  document.querySelector("#unitCount").textContent=units.length+" units";
+  document.querySelector("#unitCount").textContent=visible.length===units.length?units.length+" units":`Showing ${visible.length} of ${units.length} units`;
   document.querySelector("#totalStat").textContent=units.length;
   document.querySelector("#activeStat").textContent=units.filter(u=>!isDone(u.ordered)).length;
   document.querySelector("#waitingStat").textContent=units.filter(u=>!isDone(u.ordered)&&(rejected(u)||!people.every(p=>isDone(u.initial?.[p]))||!approved(u,"Quote review")||!approved(u,"Final drawing review"))).length;
@@ -139,7 +167,7 @@ async function loadUnits(){
   try{
     const {data,error}=await dbClient.from("tracker_units").select("id,unit_name,data_json,updated_at").order("unit_name");
     if(error)throw error;
-    units=(data||[]).map(row=>row.data_json);
+    units=(data||[]).map(row=>({...row.data_json,_updatedAt:row.updated_at||row.data_json?._updatedAt||""}));
     render();setNotice("Connected. Changes are saved to the shared online database.","success");
   }catch(err){setNotice("Could not load shared data: "+(err.message||String(err))+". Check your Supabase table and access policies.","error");document.querySelector("#units").innerHTML='<div class="empty">The shared database could not be reached. Your changes have not been saved.</div>';document.querySelector("#unitCount").textContent="Database unavailable";}
 }
@@ -160,17 +188,24 @@ document.querySelector("#signOutBtn").addEventListener("click",async()=>{if(dbCl
 function snapshot(){return JSON.parse(JSON.stringify(units));}
 async function saveExisting(id,open){
   const u=units.find(x=>x.id===id);if(!u)return;
-  try{const {error}=await dbClient.from("tracker_units").update({unit_name:u.unit,data_json:u,updated_at:new Date().toISOString()}).eq("id",id);if(error)throw error;render(open);setNotice("Saved to the shared online database.","success");}
+  try{const stamp=new Date().toISOString();u._updatedAt=stamp;const {error}=await dbClient.from("tracker_units").update({unit_name:u.unit,data_json:u,updated_at:stamp}).eq("id",id);if(error)throw error;render(open);setNotice("Saved to the shared online database.","success");}
   catch(err){setNotice("SAVE FAILED: "+err.message+". Your current changes remain visible but may not be saved. Retry or refresh only after checking the server.","error");}
 }
 function setDone(obj,val,date){obj.done=val;if(val){if(!obj.date)obj.date=date||today();obj.by=currentUsername();}else{obj.date="";obj.by="";}}
 document.querySelector("#addBtn").onclick=()=>document.querySelector("#addDialog").showModal();
 document.querySelector("#cancelAdd").onclick=()=>document.querySelector("#addDialog").close();
 document.querySelector("#refreshBtn").onclick=()=>loadUnits();
+document.querySelector("#unitSearch").addEventListener("input",()=>render(captureOpen()));
+document.querySelector("#unitSort").addEventListener("change",()=>render(captureOpen()));
+document.querySelector("#clearFilters").addEventListener("click",()=>{
+  document.querySelector("#unitSearch").value="";
+  document.querySelector("#unitSort").value="number-asc";
+  render(captureOpen());
+});
 document.querySelector("#addForm").onsubmit=async e=>{
   e.preventDefault();if(busy)return;busy=true;const btn=document.querySelector("#createBtn");btn.disabled=true;
   const form=Object.fromEntries(new FormData(e.target));const unit=newUnit(form);
-  try{const {error}=await dbClient.from("tracker_units").insert({id:unit.id,unit_name:unit.unit,data_json:unit});if(error)throw error;units.unshift(unit);e.target.reset();document.querySelector("#addDialog").close();render();setNotice("Unit added to the shared online database.","success");}
+  try{const stamp=new Date().toISOString();unit._updatedAt=stamp;const {error}=await dbClient.from("tracker_units").insert({id:unit.id,unit_name:unit.unit,data_json:unit,updated_at:stamp});if(error)throw error;units.unshift(unit);e.target.reset();document.querySelector("#addDialog").close();render();setNotice("Unit added to the shared online database.","success");}
   catch(err){setNotice("Could not add unit: "+err.message,"error");}
   finally{busy=false;btn.disabled=false;}
 };
